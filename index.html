@@ -1,0 +1,2652 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DevConnect - Conectando Talentos</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #7209b7;
+        --accent: #4cc9f0;
+        --success: #4ade80;
+        --warning: #f59e0b;
+        --error: #ef4444;
+        --dark: #1e293b;
+        --light: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --sidebar-width: 280px;
+        --header-height: 70px;
+        --border-radius: 12px;
+        --border-radius-lg: 16px;
+        --transition: all 0.3s ease;
+    }
+
+    html, body {
+        height: 100%;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        line-height: 1.6;
+        color: var(--gray-800);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .app-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: var(--sidebar-width);
+        background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .logo i {
+        font-size: 1.75rem;
+        color: var(--accent);
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex: 1;
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.85rem 1rem;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .nav-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-item.active {
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-item i {
+        font-size: 1.25rem;
+        width: 24px;
+        text-align: center;
+    }
+
+    .user-section {
+        margin-top: auto;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .user-details {
+        flex: 1;
+    }
+
+    .user-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .user-role {
+        font-size: 0.8rem;
+        opacity: 0.8;
+    }
+
+    .logout-btn {
+        width: 100%;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: var(--border-radius);
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .logout-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .header {
+        height: var(--header-height);
+        background: white;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        z-index: 5;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gray-800);
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+    }
+
+    .content-area {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
+        background: var(--gray-100);
+    }
+
+    .card {
+        background: var(--card-bg);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--card-shadow);
+        padding: 1.5rem;
+        transition: var(--transition);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .card:hover {
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+    }
+
+    .welcome-card {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .welcome-card::after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        right: 10%;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .welcome-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .welcome-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .welcome-subtitle {
+        opacity: 0.9;
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--gray-800);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(67, 97, 238, 0.4);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--gray-700);
+        border: 1px solid var(--gray-300);
+    }
+
+    .btn-secondary:hover {
+        background: var(--gray-100);
+        border-color: var(--gray-400);
+    }
+
+    .btn-success {
+        background: var(--success);
+        color: white;
+    }
+.btn-error {
+    background: var(--error);
+    color: white;
+}
+
+.btn-error:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+    .btn-success:hover {
+        background: #22c55e;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .btn-icon {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 50%;
+    }
+
+    .tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--gray-200);
+        padding-bottom: 0.5rem;
+    }
+
+    .tab {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        color: var(--gray-600);
+    }
+
+    .tab:hover {
+        background: var(--gray-100);
+        color: var(--gray-800);
+    }
+
+    .tab.active {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    }
+
+    .grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .job-card, .developer-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transition: var(--transition);
+    }
+
+    .job-card:hover, .developer-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .job-header, .developer-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .job-title, .developer-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 0.25rem;
+    }
+
+    .job-company, .developer-role {
+        font-size: 0.9rem;
+        color: var(--primary);
+        font-weight: 500;
+    }
+
+    .job-description, .developer-bio {
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        flex: 1;
+    }
+
+    .job-tags, .developer-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .tag {
+        background: var(--gray-100);
+        color: var(--gray-700);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .tag.primary {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+    }
+
+    .job-actions, .developer-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: auto;
+    }
+
+    .filters {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        position: relative;
+    }
+
+    .filter-btn {
+        background: white;
+        border: 1px solid var(--gray-300);
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .filter-btn:hover {
+        border-color: var(--gray-400);
+    }
+
+    .filter-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+
+    .filter-options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        border: 1px solid var(--gray-300);
+        border-radius: var(--border-radius);
+        padding: 0.75rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        min-width: 200px;
+        display: none;
+        margin-top: 0.5rem;
+    }
+
+    .filter-options.show {
+        display: block;
+    }
+
+    .filter-option {
+        padding: 0.5rem 0.75rem;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .filter-option:hover {
+        background: var(--gray-100);
+    }
+
+    .filter-option.selected {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+    }
+
+    .filter-option.selected::before {
+        content: "✓";
+        font-weight: bold;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--gray-700);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--gray-300);
+        border-radius: var(--border-radius);
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background: white;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .checkbox-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border-radius: var(--border-radius);
+        background: var(--gray-100);
+        transition: var(--transition);
+        cursor: pointer;
+    }
+
+    .checkbox-item:hover {
+        background: var(--gray-200);
+    }
+
+    .checkbox-item input {
+        width: auto;
+    }
+
+    .password-input-container {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--gray-500);
+        font-size: 1.1rem;
+    }
+
+    .password-requirements {
+        margin-top: 0.75rem;
+    }
+
+    .requirement {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+        transition: var(--transition);
+    }
+
+    .requirement.valid {
+        color: var(--success);
+    }
+
+    .requirement.invalid {
+        color: var(--gray-500);
+    }
+
+    .requirement-icon {
+        margin-right: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .password-strength {
+        margin-top: 0.75rem;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--gray-200);
+        overflow: hidden;
+    }
+
+    .password-strength-bar {
+        height: 100%;
+        width: 0%;
+        transition: var(--transition);
+    }
+
+    .password-strength.weak .password-strength-bar {
+        width: 33%;
+        background: var(--error);
+    }
+
+    .password-strength.medium .password-strength-bar {
+        width: 66%;
+        background: var(--warning);
+    }
+
+    .password-strength.strong .password-strength-bar {
+        width: 100%;
+        background: var(--success);
+    }
+
+    .password-match {
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-match.valid {
+        color: var(--success);
+    }
+
+    .password-match.invalid {
+        color: var(--error);
+    }
+
+    .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 1rem;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: var(--border-radius-lg);
+        padding: 2rem;
+        width: 100%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow: auto;
+        position: relative;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .close-modal {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--gray-500);
+        background: none;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+    }
+
+    .close-modal:hover {
+        background: var(--gray-100);
+        color: var(--gray-700);
+    }
+
+    .chat-container {
+        display: flex;
+        height: 600px;
+        gap: 1.5rem;
+    }
+
+    .chat-sidebar {
+        width: 300px;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .chat-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0.5rem;
+    }
+
+    .chat-item {
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+        margin-bottom: 0.5rem;
+    }
+
+    .chat-item:hover {
+        background: var(--gray-100);
+    }
+
+    .chat-item.active {
+        background: rgba(67, 97, 238, 0.1);
+        border-left: 3px solid var(--primary);
+    }
+
+    .chat-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .chat-preview {
+        color: var(--gray-500);
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .chat-time {
+        font-size: 0.75rem;
+        color: var(--gray-400);
+        margin-top: 0.25rem;
+    }
+
+    .chat-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 1.5rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 70%;  /* Opcional: limita el ancho máximo */
+    width: fit-content;  /* Se ajusta al contenido */
+}
+
+.message-content {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    word-wrap: break-word;  /* Rompe palabras largas */
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.message.user {
+    align-self: flex-end;
+}
+
+.message.other {
+    align-self: flex-start;
+}
+
+    .message small {
+        display: block;
+        font-size: 0.75rem;
+        opacity: 0.7;
+        margin-top: 0.25rem;
+    }
+
+    .message-input {
+        display: flex;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--gray-200);
+    }
+
+    .message-input input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--gray-300);
+        outline: none;
+        transition: var(--transition);
+    }
+
+    .message-input input:focus {
+        border-color: var(--primary);
+    }
+
+    .message-input button {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        border: none;
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .message-input button:hover {
+        background: var(--primary-dark);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+/* Separador de fecha en chats */
+.message-date-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+    gap: 0.75rem;
+}
+
+.message-date-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.message-date-text {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    background: var(--gray-100);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Actualizar estilos de mensajes para incluir hora */
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.message-content {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+}
+
+.message.user .message-content {
+    background: var(--primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.message.other .message-content {
+    background: var(--gray-100);
+    color: var(--gray-800);
+    border-bottom-left-radius: 4px;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    align-self: flex-end;
+}
+
+.message.other .message-time {
+    align-self: flex-start;
+}
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive styles */
+    @media (max-width: 1024px) {
+        .grid-cols-3 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .app-container {
+            flex-direction: column;
+        }
+        
+        .sidebar {
+            width: 100%;
+            height: auto;
+            padding: 1rem;
+        }
+        
+        .nav-menu {
+            flex-direction: row;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-item {
+            white-space: nowrap;
+        }
+        
+        .user-section {
+            margin-top: 0;
+            padding-top: 1rem;
+        }
+        
+        .mobile-menu-btn {
+            display: flex;
+        }
+        
+        .sidebar.collapsed {
+            display: none;
+        }
+        
+        .grid-cols-3, .grid-cols-2 {
+            grid-template-columns: 1fr;
+        }
+        
+        .chat-container {
+            flex-direction: column;
+            height: auto;
+        }
+        
+        .chat-sidebar {
+            width: 100%;
+            height: 200px;
+        }
+        
+        .filters {
+            flex-direction: column;
+        }
+        
+        .filter-group {
+            width: 100%;
+        }
+        
+        .filter-options {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .content-area {
+            padding: 1rem;
+        }
+        
+        .header {
+            padding: 0 1rem;
+        }
+        
+        .page-title {
+            font-size: 1.25rem;
+        }
+    }
+    /* --- Centrar y limitar ancho de los formularios de login/registro --- */
+
+/* Contenedores de pantalla (centran su contenido) */
+#loginScreen,
+#registerScreen {
+  /* usamos flex para centrar el card */
+  display: flex;
+  align-items: center;       /* centra verticalmente dentro del area disponible */
+  justify-content: center;   /* centra horizontalmente */
+  padding: 2rem;             /* espacio alrededor para móviles */
+  min-height: calc(100vh - var(--header-height)); /* opcional: que ocupe altura disponible */
+  box-sizing: border-box;
+}
+
+/* Limitar ancho del card que contiene el formulario */
+#loginScreen .card,
+#registerScreen .card {
+  width: 100%;           /* ocupará hasta el max-width */
+  max-width: 420px;      /* ancho máximo del formulario (ajusta aquí) */
+  margin: 0 auto;        /* garantía de centrado en caso de no usar flex */
+  padding: 1.5rem;       /* ya tienes padding en .card, lo conservamos */
+  box-shadow: var(--card-shadow);
+}
+
+/* Si quieres inputs y botones un poco más compactos: */
+#loginScreen .form-control,
+#registerScreen .form-control {
+  padding: 0.6rem 0.9rem; /* hace los textbox un poco más pequeños */
+  font-size: 0.95rem;
+}
+
+/* Opcional: reducir ancho de botones si no quieres que llenen todo */
+#loginScreen .btn[type="submit"],
+#registerScreen .btn[type="submit"],
+#loginScreen .btn.btn-primary,
+#registerScreen .btn.btn-primary {
+  width: 100%; /* deja en 100% si quieres que coincidan con inputs */
+  /* si prefieres margen lateral en lugar de ancho completo, comentar la linea anterior
+     y usar:
+     width: auto;
+     display: inline-block;
+     padding-left/right (ya definidos en .btn)
+  */
+}
+
+/* Responsive: en pantallas muy pequeñas (móviles) mantenemos ancho completo visual */
+@media (max-width: 420px) {
+  #loginScreen .card,
+  #registerScreen .card {
+    max-width: 100%;
+    margin: 0.5rem;
+  }
+}
+
+</style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar hidden" id="sidebar">
+            <div class="logo">
+                <i class="fas fa-code-branch"></i>
+                <span>DevConnect</span>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="showDashboard()">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </div>
+                <div class="nav-item" onclick="showChats()">
+                    <i class="fas fa-comments"></i>
+                    <span>Mensajes</span>
+                </div>
+                
+                
+            </div>
+            
+            <div class="user-section" id="userSection">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">JD</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">John Doe</div>
+                        <div class="user-role" id="userRole">Desarrollador</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="page-title" id="pageTitle">DevConnect</div>
+                <div class="header-actions">
+                    <button class="mobile-menu-btn hidden" id="mobileMenuBtn" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="content-area" id="contentArea">
+                <!-- Home Screen -->
+                <div id="homeScreen">
+                    <div class="welcome-card card">
+                        <div class="welcome-content">
+                            <h1 class="welcome-title">Bienvenido a DevConnect</h1>
+                            <p class="welcome-subtitle">Conectando talentos con oportunidades</p>
+                        </div>
+                    </div>
+                    
+                    <div class="actions-grid grid grid-cols-2">
+                        <div class="card text-center">
+                            <i class="fas fa-sign-in-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 0.5rem;">¿Ya tienes cuenta?</h3>
+                            <p style="color: var(--gray-600); margin-bottom: 1.5rem;">Inicia sesión para acceder a tu perfil</p>
+                            <button class="btn btn-primary" onclick="showLogin()">Iniciar Sesión</button>
+                        </div>
+                        
+                        <div class="card text-center">
+                            <i class="fas fa-user-plus" style="font-size: 3rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 0.5rem;">¿Eres nuevo?</h3>
+                            <p style="color: var(--gray-600); margin-bottom: 1.5rem;">Regístrate para encontrar oportunidades</p>
+                            <button class="btn btn-secondary" onclick="showRegisterOptions()">Registrarse</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Login Screen -->
+                <div id="loginScreen" class="hidden">
+                    <div class="card">
+                        <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                            <button class="btn btn-icon btn-secondary" onclick="showHome()">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2 style="margin-left: 1rem; margin-bottom: 0;">Iniciar Sesión</h2>
+                        </div>
+                        
+                        <form onsubmit="login(event)" autocomplete="on">
+                            <div class="form-group">
+                                <label class="form-label" for="loginUsername">Usuario</label>
+                                <input class="form-control" id="loginUsername" type="text" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="loginPassword">Contraseña</label>
+                                <div class="password-input-container">
+                                    <input class="form-control" id="loginPassword" type="password" required />
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="loginButton" style="width: 100%;">
+                                <span>Entrar</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Register Options Screen -->
+                <div id="registerOptionsScreen" class="hidden">
+                    <div class="card">
+                        <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                            <button class="btn btn-icon btn-secondary" onclick="showHome()">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2 style="margin-left: 1rem; margin-bottom: 0;">Tipo de Registro</h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-2" style="gap: 1.5rem;">
+                            <div class="card text-center" style="cursor: pointer;" onclick="showRegister('empleador')">
+                                <i class="fas fa-building" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                                <h3 style="margin-bottom: 0.5rem;">Empleador</h3>
+                                <p style="color: var(--gray-600);">Publica ofertas y encuentra talento</p>
+                            </div>
+                            
+                            <div class="card text-center" style="cursor: pointer;" onclick="showRegister('desarrollador')">
+                                <i class="fas fa-laptop-code" style="font-size: 3rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                                <h3 style="margin-bottom: 0.5rem;">Desarrollador</h3>
+                                <p style="color: var(--gray-600);">Encuentra oportunidades laborales</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Register Screen -->
+                <div id="registerScreen" class="hidden">
+                    <div class="card">
+                        <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                            <button class="btn btn-icon btn-secondary" onclick="showRegisterOptions()">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2 style="margin-left: 1rem; margin-bottom: 0;" id="registerTitle">Registro</h2>
+                        </div>
+                        
+                        <form id="registerForm" onsubmit="register(event)" autocomplete="on">
+                            <div class="form-group">
+                                <label class="form-label" for="regUsername">Nombre de Usuario</label>
+                                <input class="form-control" id="regUsername" type="text" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="regPassword">Contraseña</label>
+                                <div class="password-input-container">
+                                    <input class="form-control" id="regPassword" type="password" required oninput="checkPasswordStrength()" />
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('regPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="password-requirements">
+                                    <div class="requirement invalid" id="req-length">
+                                        <span class="requirement-icon">●</span>
+                                        Mínimo 8 caracteres
+                                    </div>
+                                    <div class="requirement invalid" id="req-uppercase">
+                                        <span class="requirement-icon">●</span>
+                                        Al menos una mayúscula
+                                    </div>
+                                    <div class="requirement invalid" id="req-lowercase">
+                                        <span class="requirement-icon">●</span>
+                                        Al menos una minúscula
+                                    </div>
+                                    <div class="requirement invalid" id="req-number">
+                                        <span class="requirement-icon">●</span>
+                                        Al menos un número
+                                    </div>
+                                    <div class="requirement invalid" id="req-symbol">
+                                        <span class="requirement-icon">●</span>
+                                        Al menos un símbolo (!@#$%^&*)
+                                    </div>
+                                </div>
+                                
+                                <div class="password-strength">
+                                    <div class="password-strength-bar"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group confirm-password">
+                                <label class="form-label" for="regConfirmPassword">Confirmar Contraseña</label>
+                                <div class="password-input-container">
+                                    <input class="form-control" id="regConfirmPassword" type="password" required oninput="checkPasswordMatch()" />
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('regConfirmPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="password-match invalid" id="password-match">
+                                    Las contraseñas deben coincidir
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="regFirstName">Nombres</label>
+                                <input class="form-control" id="regFirstName" type="text" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="regLastName">Apellidos</label>
+                                <input class="form-control" id="regLastName" type="text" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="regBirthDate">Fecha de Nacimiento</label>
+                                <input class="form-control" id="regBirthDate" type="date" required />
+                            </div>
+
+                            <div id="employerFields" class="form-group hidden">
+                                <label class="form-label" for="regCompany">Empresa (opcional)</label>
+                                <input class="form-control" id="regCompany" type="text" placeholder="Nombre de la empresa" />
+                            </div>
+
+                            <div id="developerFields" class="hidden">
+                                <div class="form-group">
+                                    <label class="form-label">Lenguajes de Programación</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item"><input class="lang-checkbox" type="checkbox" value="JavaScript"> JavaScript</label>
+                                        <label class="checkbox-item"><input class="lang-checkbox" type="checkbox" value="Python"> Python</label>
+                                        <label class="checkbox-item"><input class="lang-checkbox" type="checkbox" value="Java"> Java</label>
+                                        <label class="checkbox-item"><input class="lang-checkbox" type="checkbox" value="C#"> C#</label>
+                                        <label class="checkbox-item"><input class="lang-checkbox" type="checkbox" value="PHP"> PHP</label>
+                                        <label class="checkbox-item"><input class="lang-checkbox" type="checkbox" value="C++"> C++</label>
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Áreas de Especialización</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item"><input class="area-checkbox" type="checkbox" value="Frontend"> Frontend</label>
+                                        <label class="checkbox-item"><input class="area-checkbox" type="checkbox" value="Backend"> Backend</label>
+                                        <label class="checkbox-item"><input class="area-checkbox" type="checkbox" value="Full Stack"> Full Stack</label>
+                                        <label class="checkbox-item"><input class="area-checkbox" type="checkbox" value="Mobile"> Mobile</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="registerButton" style="width: 100%;">Registrarse</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Dashboard Screen -->
+                <div id="dashboardScreen" class="hidden">
+                    <div class="welcome-card card">
+                        <div class="welcome-content">
+                            <h1 class="welcome-title">Bienvenido de vuelta, <span id="dashboardUserName">John</span></h1>
+                            <p class="welcome-subtitle" id="dashboardUserRole">Desarrollador</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('myJobs')">Mis Publicaciones</div>
+                        <div class="tab" onclick="switchTab('otherJobs')">Otras Publicaciones</div>
+                        <div class="tab" onclick="switchTab('developers')">Desarrolladores</div>
+                    </div>
+                    
+                    <!-- Filtros para desarrolladores -->
+                    <div id="developerFilters" class="filters hidden">
+                        <div class="filter-group">
+                            <button class="filter-btn" onclick="toggleFilter('languages')">
+                                Lenguajes ▼
+                            </button>
+                            <div id="languagesFilter" class="filter-options">
+                                <div class="filter-option" onclick="toggleLanguage('JavaScript')">JavaScript</div>
+                                <div class="filter-option" onclick="toggleLanguage('Python')">Python</div>
+                                <div class="filter-option" onclick="toggleLanguage('Java')">Java</div>
+                                <div class="filter-option" onclick="toggleLanguage('C#')">C#</div>
+                                <div class="filter-option" onclick="toggleLanguage('PHP')">PHP</div>
+                                <div class="filter-option" onclick="toggleLanguage('C++')">C++</div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <button class="filter-btn" onclick="toggleFilter('areas')">
+                                Especialización ▼
+                            </button>
+                            <div id="areasFilter" class="filter-options">
+                                <div class="filter-option" onclick="toggleArea('Frontend')">Frontend</div>
+                                <div class="filter-option" onclick="toggleArea('Backend')">Backend</div>
+                                <div class="filter-option" onclick="toggleArea('Full Stack')">Full Stack</div>
+                                <div class="filter-option" onclick="toggleArea('Mobile')">Mobile</div>
+                            </div>
+                        </div>
+                        
+                        <button class="filter-btn" onclick="clearFilters()">
+                            Limpiar Filtros
+                        </button>
+                    </div>
+                    
+                    <div id="myJobsTabContent">
+                        <div class="section-title">
+                            <span>Mis Publicaciones</span>
+                            <button class="btn btn-primary btn-sm" onclick="showAddJob()">
+                                <i class="fas fa-plus"></i>
+                                <span>Nueva Oferta</span>
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-2" id="myJobsList">
+                            <!-- Jobs will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div id="otherJobsTabContent" class="hidden">
+                        <div class="section-title">
+                            <span>Otras Publicaciones</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2" id="otherJobsList">
+                            <!-- Jobs will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div id="developersTabContent" class="hidden">
+                        <div class="section-title">
+                            <span>Desarrolladores</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-3" id="developersList">
+                            <!-- Developers will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add Job Screen -->
+                <div id="addJobScreen" class="hidden">
+                    <div class="card">
+<div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+<button class="btn btn-icon btn-secondary" onclick="resetAndShowDashboard()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <h2 style="margin-left: 1rem; margin-bottom: 0;"> Agregar Oferta</h2>
+</div>
+                        
+                        <form id="addJobForm" onsubmit="addJob(event)">
+                            <div class="form-group">
+                                <label class="form-label" for="jobTitle">Título</label>
+                                <input class="form-control" id="jobTitle" type="text" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="jobCompany">Empresa</label>
+                                <input class="form-control" id="jobCompany" type="text" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="jobDescription">Descripción</label>
+                                <textarea class="form-control" id="jobDescription" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Requisitos</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item"><input class="job-req" type="checkbox" value="JavaScript"> JavaScript</label>
+                                    <label class="checkbox-item"><input class="job-req" type="checkbox" value="Python"> Python</label>
+                                    <label class="checkbox-item"><input class="job-req" type="checkbox" value="Java"> Java</label>
+                                    <label class="checkbox-item"><input class="job-req" type="checkbox" value="C#"> C#</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="addJobButtonForm" style="width: 100%;">
+                                <span>Agregar</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Chats Screen -->
+                <div id="chatScreen" class="hidden">
+                    <div class="card">
+                        <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                            <button class="btn btn-icon btn-secondary" onclick="showDashboard()">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2 style="margin-left: 1rem; margin-bottom: 0;">Mis Conversaciones</h2>
+                        </div>
+                        
+                        <div class="chat-container">
+                            <div class="chat-sidebar">
+                                <div class="chat-list" id="chatList"></div>
+                            </div>
+                            <div class="chat-main">
+                                <div class="chat-header">
+                                    <h3 id="currentChatTitle">Selecciona una conversación</h3>
+                                </div>
+                                <div class="chat-messages" id="chatMessages"></div>
+                                <div class="message-input">
+                                    <input type="text" id="chatInput" placeholder="Escribe un mensaje..." />
+                                    <button onclick="sendMessage()">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    if (date.toDateString() === today.toDateString()) {
+        return 'Hoy a las ' + date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    } else if (date.toDateString() === yesterday.toDateString()) {
+        return 'Ayer a las ' + date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    } else {
+        return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+}
+        // Variables globales (del código original)
+        let currentUser = null;
+        let currentToken = null;
+        let jobs = [];
+        let developers = [];
+        let chats = {};
+        let currentChat = null;
+        let activeTab = 'myJobs';
+        let selectedLanguages = [];
+        let selectedAreas = [];
+        const API_BASE = 'https://equipo1labura.infinityfreeapp.com/api';
+
+        // Estado de autenticación
+        let isAuthenticated = false;
+
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+        });
+
+        // Verificar el estado de autenticación
+        function checkAuthentication() {
+            const savedToken = localStorage.getItem('devconnect_token');
+            const savedUser = localStorage.getItem('devconnect_user');
+            
+            if (savedToken && savedUser) {
+                currentToken = savedToken;
+                currentUser = JSON.parse(savedUser);
+                isAuthenticated = true;
+                showAuthenticatedUI();
+            } else {
+                isAuthenticated = false;
+                showUnauthenticatedUI();
+            }
+        }
+        // Configurar permisos según el tipo de usuario
+function setupUserPermissions() {
+    const isDeveloper = currentUser.type === 'desarrollador';
+    const isEmployer = currentUser.type === 'empleador';
+    
+    // Si es desarrollador, ocultar opciones que no debe ver
+    if (isDeveloper) {
+        // Ocultar el botón de agregar oferta en el dashboard
+        const addJobBtn = document.querySelector('[onclick="showAddJob()"]');
+        if (addJobBtn) addJobBtn.style.display = 'none';
+        
+        // Ocultar la pestaña de desarrolladores
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            if (tab.textContent.includes('Desarrolladores')) {
+                tab.style.display = 'none';
+            }
+        });
+        
+        // Asegurarse de que solo vea "Otras Publicaciones"
+        // Renombrar "Mis Publicaciones" a "Publicaciones"
+        tabs.forEach(tab => {
+            if (tab.textContent.includes('Mis Publicaciones')) {
+                tab.textContent = 'Publicaciones Disponibles';
+            }
+            if (tab.textContent.includes('Otras Publicaciones')) {
+                tab.style.display = 'none';
+            }
+        });
+    }
+    
+    // Si es empleador, mostrar todas las opciones (comportamiento actual)
+    if (isEmployer) {
+        const addJobBtn = document.querySelector('[onclick="showAddJob()"]');
+        if (addJobBtn) addJobBtn.style.display = '';
+        
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => tab.style.display = '');
+    }
+}
+
+        // Mostrar la interfaz para usuarios autenticados
+        function showAuthenticatedUI() {
+    // Ocultar todas las pantallas de no autenticados
+    document.getElementById('homeScreen').classList.add('hidden');
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('registerOptionsScreen').classList.add('hidden');
+    document.getElementById('registerScreen').classList.add('hidden');
+    
+    // Mostrar elementos de autenticados
+    document.getElementById('sidebar').classList.remove('hidden');
+    document.getElementById('mobileMenuBtn').classList.remove('hidden');
+    
+    // Actualizar la información del usuario
+    updateUserInfo();
+    
+    // Configurar permisos según el tipo de usuario
+    setupUserPermissions();
+    
+    // Mostrar el dashboard por defecto
+    showDashboard();
+}
+        // Mostrar la interfaz para usuarios no autenticados
+        function showUnauthenticatedUI() {
+            // Ocultar todas las pantallas de autenticados
+            document.getElementById('sidebar').classList.add('hidden');
+            document.getElementById('mobileMenuBtn').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.add('hidden');
+            document.getElementById('addJobScreen').classList.add('hidden');
+            document.getElementById('chatScreen').classList.add('hidden');
+            
+            // Mostrar la pantalla de inicio por defecto
+            document.getElementById('homeScreen').classList.remove('hidden');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('registerOptionsScreen').classList.add('hidden');
+            document.getElementById('registerScreen').classList.add('hidden');
+            
+            // Actualizar el título de la página
+            document.getElementById('pageTitle').textContent = 'DevConnect';
+        }
+
+        // Actualizar la información del usuario en la interfaz
+        function updateUserInfo() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.firstName + ' ' + currentUser.lastName;
+                document.getElementById('userRole').textContent = currentUser.type === 'empleador' ? 'Empleador' : 'Desarrollador';
+                document.getElementById('userAvatar').textContent = currentUser.firstName.charAt(0).toUpperCase();
+                
+                document.getElementById('dashboardUserName').textContent = currentUser.firstName;
+                document.getElementById('dashboardUserRole').textContent = currentUser.type === 'empleador' ? 'Empleador' : 'Desarrollador';
+            }
+        }
+
+        // Función para hacer requests a la API (del código original)
+        async function apiCall(endpoint, options = {}) {
+            const url = `${API_BASE}/${endpoint}`;
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                ...options
+            };
+            
+            if (currentToken) {
+                config.headers['Authorization'] = `Bearer ${currentToken}`;
+            }
+            
+            if (config.body && typeof config.body === 'object') {
+                config.body = JSON.stringify(config.body);
+            }
+            
+            try {
+                const response = await fetch(url, config);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Error en la solicitud');
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // Función para mostrar/ocultar loading (del código original)
+        function setLoading(button, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                button.innerHTML = '<div class="loading"></div> Procesando...';
+            } else {
+                button.disabled = false;
+                button.innerHTML = button.getAttribute('data-original-text') || button.textContent;
+            }
+        }
+
+        // Función de utilidad para escape HTML (del código original)
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Funciones de navegación para usuarios no autenticados
+        function showHome(){
+            if (isAuthenticated) {
+                showDashboard();
+                return;
+            }
+            hideAllScreens();
+            document.getElementById('homeScreen').classList.remove('hidden');
+            updatePageTitle('DevConnect');
+        }
+
+        function showLogin(){
+            if (isAuthenticated) {
+                showDashboard();
+                return;
+            }
+            hideAllScreens();
+            document.getElementById('loginScreen').classList.remove('hidden');
+            updatePageTitle('Iniciar Sesión');
+        }
+
+        function showRegisterOptions(){
+            if (isAuthenticated) {
+                showDashboard();
+                return;
+            }
+            hideAllScreens();
+            document.getElementById('registerOptionsScreen').classList.remove('hidden');
+            updatePageTitle('Tipo de Registro');
+        }
+
+        function showRegister(type){
+            if (isAuthenticated) {
+                showDashboard();
+                return;
+            }
+            document.getElementById('registerTitle').innerText = type==='empleador'?'Registro Empleador':'Registro Desarrollador';
+            document.getElementById('employerFields').classList.toggle('hidden', type!=='empleador');
+            document.getElementById('developerFields').classList.toggle('hidden', type!=='desarrollador');
+            document.getElementById('registerForm').dataset.type = type;
+            
+            // Resetear la verificación de contraseña
+            resetPasswordValidation();
+            
+            hideAllScreens();
+            document.getElementById('registerScreen').classList.remove('hidden');
+            updatePageTitle('Registro');
+        }
+
+        // Funciones de navegación para usuarios autenticados
+        function showDashboard(){
+            if (!isAuthenticated) {
+                showHome();
+                return;
+            }
+            
+            hideAllScreens();
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            updatePageTitle('Dashboard');
+            
+            loadContent();
+        }
+
+function showAddJob(){
+    if (!isAuthenticated) {
+        showHome();
+        return;
+    }
+    
+    // Resetear el formulario si no estamos editando
+    if (!document.getElementById('addJobForm').dataset.isEdit) {
+        document.getElementById('addJobForm').reset();
+        document.querySelectorAll('.job-req').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    }
+    
+    hideAllScreens();
+    document.getElementById('addJobScreen').classList.remove('hidden');
+    updatePageTitle('Agregar Oferta');
+}
+
+        function showChats(){
+            if (!isAuthenticated) {
+                showHome();
+                return;
+            }
+            
+            hideAllScreens();
+            document.getElementById('chatScreen').classList.remove('hidden');
+            updatePageTitle('Mensajes');
+            loadChatList();
+        }
+
+        function hideAllScreens() {
+            const screens = [
+                'homeScreen', 'loginScreen', 'registerOptionsScreen', 
+                'registerScreen', 'dashboardScreen', 'addJobScreen', 'chatScreen'
+            ];
+            
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+        }
+
+        function updatePageTitle(title) {
+            document.getElementById('pageTitle').textContent = title;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        // Función de login (del código original)
+        async function login(e){
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const loginButton = document.getElementById('loginButton');
+            
+            // Guardar texto original y mostrar loading
+            loginButton.setAttribute('data-original-text', loginButton.textContent);
+            setLoading(loginButton, true);
+            
+            try {
+                const result = await apiCall('auth.php', {
+                    method: 'POST',
+                    body: {
+                        action: 'login',
+                        username: username,
+                        password: password
+                    }
+                });
+                
+                if (result.success) {
+                    currentUser = result.user;
+                    currentToken = result.token;
+                    isAuthenticated = true;
+                    localStorage.setItem('devconnect_token', currentToken);
+                    localStorage.setItem('devconnect_user', JSON.stringify(currentUser));
+                    
+                    showAuthenticatedUI();
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                setLoading(loginButton, false);
+            }
+        }
+
+        // Función de registro (del código original)
+        async function register(e){
+            e.preventDefault();
+            
+            if (!isPasswordValid()) {
+                alert('La contraseña no cumple con los requisitos mínimos de seguridad.');
+                return;
+            }
+            
+            if (!doPasswordsMatch()) {
+                alert('Las contraseñas no coinciden.');
+                return;
+            }
+            
+            const type = e.target.dataset.type;
+            const registerButton = document.getElementById('registerButton');
+            registerButton.setAttribute('data-original-text', registerButton.textContent);
+            setLoading(registerButton, true);
+            
+            const formData = {
+                action: 'register',
+                username: document.getElementById('regUsername').value,
+                password: document.getElementById('regPassword').value,
+                firstName: document.getElementById('regFirstName').value,
+                lastName: document.getElementById('regLastName').value,
+                birthDate: document.getElementById('regBirthDate').value,
+                type: type,
+                company: type === 'empleador' ? document.getElementById('regCompany').value : null
+            };
+            
+            if (type === 'desarrollador') {
+                formData.languages = Array.from(document.querySelectorAll('.lang-checkbox:checked')).map(i => i.value);
+                formData.areas = Array.from(document.querySelectorAll('.area-checkbox:checked')).map(i => i.value);
+            }
+            
+            try {
+                const result = await apiCall('auth.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (result.success) {
+                    currentUser = result.user;
+                    currentToken = result.token;
+                    isAuthenticated = true;
+                    localStorage.setItem('devconnect_token', currentToken);
+                    localStorage.setItem('devconnect_user', JSON.stringify(currentUser));
+                    
+                    alert('Registro exitoso');
+                    showAuthenticatedUI();
+                    
+                    // Reset registration form
+                    document.getElementById('registerForm').reset();
+                    resetPasswordValidation();
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                setLoading(registerButton, false);
+            }
+        }
+
+        function logout(){
+            currentUser = null;
+            currentToken = null;
+            isAuthenticated = false;
+            localStorage.removeItem('devconnect_token');
+            localStorage.removeItem('devconnect_user');
+            showUnauthenticatedUI();
+        }
+
+        // Función para agregar trabajo (del código original)
+        function editJob(jobId) {
+    const job = jobs.find(j => j.id == jobId);
+    if (!job) {
+        alert('Oferta no encontrada');
+        return;
+    }
+    
+    // Rellenar el formulario con los datos actuales
+    document.getElementById('jobTitle').value = job.title;
+    document.getElementById('jobCompany').value = job.company;
+    document.getElementById('jobDescription').value = job.description;
+    
+    // Marcar los requisitos actuales
+    document.querySelectorAll('.job-req').forEach(checkbox => {
+        checkbox.checked = job.requirements.includes(checkbox.value);
+    });
+    
+    // Cambiar el ID del formulario para saber que es edición
+    document.getElementById('addJobForm').dataset.jobId = jobId;
+    document.getElementById('addJobForm').dataset.isEdit = 'true';
+    
+    // Cambiar el título y el botón
+    document.querySelector('#addJobScreen h2').textContent = 'Editar Oferta';
+    document.getElementById('addJobButtonForm').innerHTML = '<span>Guardar Cambios</span>';
+    
+    showAddJob();
+}
+
+// Función para eliminar trabajo
+async function deleteJob(jobId, jobTitle) {
+    if (!confirm(`¿Está seguro de que desea eliminar la oferta "${jobTitle}"?`)) {
+        return;
+    }
+    
+    try {
+        const result = await apiCall('jobs.php', {
+            method: 'POST',
+            body: {
+                action: 'delete',
+                jobId: jobId
+            }
+        });
+        
+        if (result.success) {
+            alert('Oferta eliminada exitosamente');
+            loadContent();
+        }
+    } catch (error) {
+        alert('Error al eliminar: ' + error.message);
+    }
+}
+
+// Actualizar la función addJob para manejar ediciones
+// Actualizar la función addJob para manejar ediciones
+async function addJob(e){
+    e.preventDefault();
+    const isEdit = document.getElementById('addJobForm').dataset.isEdit === 'true';
+    const jobId = document.getElementById('addJobForm').dataset.jobId;
+    const addJobButton = document.getElementById('addJobButtonForm');
+    addJobButton.setAttribute('data-original-text', addJobButton.textContent);
+    setLoading(addJobButton, true);
+    
+    const formData = {
+        action: isEdit ? 'update' : 'add',
+        title: document.getElementById('jobTitle').value,
+        company: document.getElementById('jobCompany').value,
+        description: document.getElementById('jobDescription').value,
+        requirements: Array.from(document.querySelectorAll('.job-req:checked')).map(i => i.value),
+        employerId: currentUser.id
+    };
+    
+    if (isEdit) {
+        formData.jobId = jobId;
+    }
+    
+    try {
+        const result = await apiCall('jobs.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (result.success) {
+            alert(isEdit ? 'Oferta actualizada exitosamente' : 'Oferta agregada exitosamente');
+            
+            // Resetear el formulario completamente
+            document.getElementById('addJobForm').reset();
+            document.getElementById('addJobForm').removeAttribute('data-jobId');
+            document.getElementById('addJobForm').removeAttribute('data-isEdit');
+            document.querySelector('#addJobScreen h2').textContent = 'Agregar Oferta';
+            document.getElementById('addJobButtonForm').textContent = 'Agregar';
+            
+            // Desmarcar todos los checkboxes
+            document.querySelectorAll('.job-req').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            showDashboard();
+        }
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        setLoading(addJobButton, false);
+    }
+}
+
+function resetAndShowDashboard() {
+    // Resetear el formulario completamente
+    document.getElementById('addJobForm').reset();
+    document.getElementById('addJobForm').removeAttribute('data-jobId');
+    document.getElementById('addJobForm').removeAttribute('data-isEdit');
+    document.querySelector('#addJobScreen h2').textContent = 'Agregar Oferta';
+    document.getElementById('addJobButtonForm').textContent = 'Agregar';
+    
+    // Desmarcar todos los checkboxes
+    document.querySelectorAll('.job-req').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Mostrar dashboard
+    showDashboard();
+}
+
+function switchTab(tabName) {
+    // Si es desarrollador y intenta acceder a desarrolladores, prevenir
+    if (currentUser.type === 'desarrollador' && tabName === 'developers') {
+        alert('No tienes permisos para ver esta sección.');
+        return;
+    }
+    
+    activeTab = tabName;
+    
+    // Actualizar pestañas activas
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.toggle('active', tab.textContent.includes(
+            tabName === 'myJobs' ? 'Mis Publicaciones' : 
+            tabName === 'otherJobs' ? 'Otras Publicaciones' : 'Desarrolladores'
+        ) || (currentUser.type === 'desarrollador' && tab.textContent.includes('Publicaciones Disponibles') && tabName === 'myJobs'));
+    });
+    
+    // Mostrar/ocultar filtros según la pestaña
+    if (tabName === 'developers') {
+        document.getElementById('developerFilters').classList.remove('hidden');
+    } else {
+        document.getElementById('developerFilters').classList.add('hidden');
+    }
+    
+    // Mostrar/ocultar contenido de pestañas
+    document.getElementById('myJobsTabContent').classList.toggle('hidden', tabName !== 'myJobs');
+    document.getElementById('otherJobsTabContent').classList.toggle('hidden', tabName !== 'otherJobs');
+    document.getElementById('developersTabContent').classList.toggle('hidden', tabName !== 'developers');
+    
+    loadContent();
+}
+
+        function loadContent(){
+            if (activeTab === 'developers') {
+                // Mostrar lista de desarrolladores con filtros
+                loadDevelopers();
+            } else {
+                // Mostrar lista de trabajos
+                loadJobsToDisplay();
+            }
+        }
+
+        // Función para cargar trabajos (del código original)
+        async function loadJobsToDisplay(){
+    const myJobsList = document.getElementById('myJobsList');
+    const otherJobsList = document.getElementById('otherJobsList');
+    
+    myJobsList.innerHTML = '<p>Cargando ofertas...</p>';
+    otherJobsList.innerHTML = '<p>Cargando ofertas...</p>';
+    
+    try {
+        const result = await apiCall('jobs.php');
+        jobs = result.jobs;
+        
+        let jobsToShowMy = [];
+        let jobsToShowOther = [];
+        
+        // Si es desarrollador, mostrar TODAS las ofertas en "myJobs" (que ahora se llama "Publicaciones Disponibles")
+        if (currentUser.type === 'desarrollador') {
+            jobsToShowMy = jobs; // Mostrar todas las ofertas disponibles
+        } 
+        // Si es empleador, mostrar solo sus ofertas en "Mis Publicaciones"
+        else if (activeTab === 'myJobs' && currentUser.type === 'empleador') {
+            jobsToShowMy = jobs.filter(job => job.employerId == currentUser.id);
+        } else if (activeTab === 'otherJobs') {
+            jobsToShowOther = jobs.filter(job => job.employerId != currentUser.id);
+        }
+        
+        displayJobs(myJobsList, jobsToShowMy);
+        displayJobs(otherJobsList, jobsToShowOther);
+    } catch (error) {
+        myJobsList.innerHTML = `<p>Error al cargar ofertas: ${error.message}</p>`;
+        otherJobsList.innerHTML = `<p>Error al cargar ofertas: ${error.message}</p>`;
+    }
+}
+
+        // Función para mostrar trabajos en la lista (del código original)
+ function displayJobs(list, jobsToShow) {
+    list.innerHTML = '';
+    
+    if (jobsToShow.length === 0) {
+        list.innerHTML = '<div class="card text-center" style="grid-column: 1 / -1; padding: 2rem;"><p>No se encontraron ofertas de trabajo.</p></div>';
+        return;
+    }
+    
+    jobsToShow.forEach(job => {
+        const card = document.createElement('div');
+        card.className = 'job-card card';
+        
+        const titleHtml = `<div class="job-title">${escapeHtml(job.title)}</div>`;
+        const companyHtml = `<div class="job-company">${escapeHtml(job.company)}</div>`;
+        const dateHtml = `<div class="job-date" style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 0.5rem;">${formatDate(job.publicationDate)}</div>`;
+        const descHtml = `<div class="job-description">${escapeHtml(job.description)}</div>`;
+        const reqHtml = `<div class="job-tags">${job.requirements.map(r => `<span class="tag primary">${escapeHtml(r)}</span>`).join('')}</div>`;
+
+        let actionBtnsHtml = '';
+        
+        console.log('Comparando:', currentUser.id, '==', job.employerId, 'Tipo:', currentUser.type);
+        
+        // Si es empleador Y es su propia publicación
+        if (currentUser.type === 'empleador' && parseInt(currentUser.id) === parseInt(job.employerId)) {
+            actionBtnsHtml = `
+                <div class="job-actions">
+                    <button class="btn btn-primary btn-sm" onclick="editJob(${job.id})">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                    </button>
+                    <button class="btn btn-error btn-sm" onclick="deleteJob(${job.id}, '${escapeHtml(job.title)}')">
+                        <i class="fas fa-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
+            `;
+        } 
+        // Si es desarrollador
+        else if (currentUser.type === 'desarrollador') {
+            actionBtnsHtml = `
+                <div class="job-actions">
+                    <button class="btn btn-secondary btn-sm" onclick="openChat(${job.id}, ${job.employerId}, '${escapeHtml(job.title)}')">
+                        <i class="fas fa-comments"></i>
+                        <span>Contactar</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        card.innerHTML = `
+            <div class="job-header">
+                <div>
+                    ${titleHtml}
+                    ${companyHtml}
+                </div>
+            </div>
+            ${dateHtml}
+            ${descHtml}
+            ${reqHtml}
+            ${actionBtnsHtml}
+        `;
+        list.appendChild(card);
+    });
+}
+        card.innerHTML = `
+            <div class="job-header">
+                <div>
+                    ${titleHtml}
+                    ${companyHtml}
+                </div>
+            </div>
+            ${descHtml}
+            ${reqHtml}
+            ${actionBtnsHtml}
+        `;
+        list.appendChild(card);
+
+        // Función para cargar desarrolladores (del código original)
+        async function loadDevelopers() {
+            const list = document.getElementById('developersList');
+            list.innerHTML = '<p>Cargando desarrolladores...</p>';
+            
+            try {
+                const params = new URLSearchParams();
+                if (selectedLanguages.length > 0) {
+                    params.append('languages', selectedLanguages.join(','));
+                }
+                if (selectedAreas.length > 0) {
+                    params.append('areas', selectedAreas.join(','));
+                }
+                
+                const result = await apiCall(`developers.php?${params}`);
+                developers = result.developers;
+                displayDevelopers(list, developers);
+            } catch (error) {
+                list.innerHTML = `<p>Error al cargar desarrolladores: ${error.message}</p>`;
+            }
+        }
+
+        // Función para mostrar desarrolladores en la lista (del código original)
+        function displayDevelopers(list, developersToShow) {
+            list.innerHTML = '';
+            
+            if (developersToShow.length === 0) {
+                list.innerHTML = '<div class="card text-center" style="grid-column: 1 / -1; padding: 2rem;"><p>No se encontraron desarrolladores que coincidan con los filtros.</p></div>';
+                return;
+            }
+            
+            developersToShow.forEach(dev => {
+                const card = document.createElement('div');
+                card.className = 'developer-card card';
+                
+                const nameHtml = `<div class="developer-name">${escapeHtml(dev.firstName)} ${escapeHtml(dev.lastName)}</div>`;
+                const languagesHtml = `<div class="developer-skills">${dev.languages.map(lang => `<span class="tag primary">${escapeHtml(lang)}</span>`).join('')}</div>`;
+                const areasHtml = `<div class="developer-skills">${dev.areas.map(area => `<span class="tag">${escapeHtml(area)}</span>`).join('')}</div>`;
+                
+                // Botón para contactar (iniciar chat)
+                const contactBtn = `<button class="btn btn-secondary btn-sm" onclick="contactDeveloper(${dev.id})">
+                    <i class="fas fa-comments"></i>
+                    <span>Contactar</span>
+                </button>`;
+                
+                card.innerHTML = `
+                    <div class="developer-header">
+                        <div>
+                            ${nameHtml}
+                        </div>
+                    </div>
+                    ${languagesHtml}
+                    ${areasHtml}
+                    <div class="developer-actions">
+                        ${contactBtn}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function contactDeveloper(devId) {
+            // Crear una oferta ficticia para el chat
+            const chatJob = {
+                id: 'contact_' + Date.now(),
+                title: 'Contacto directo',
+                company: currentUser.company || 'Sin empresa especificada',
+                employerId: currentUser.id
+            };
+            
+            openChat(chatJob.id, devId, 'Contacto directo');
+        }
+
+        // Funciones para la verificación de contraseña (del código original)
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.parentNode.querySelector('.toggle-password');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                input.type = 'password';
+                button.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('regPassword').value;
+            const strengthBar = document.querySelector('.password-strength');
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                symbol: /[!@#$%^&*]/.test(password)
+            };
+            
+            // Actualizar los indicadores de requisitos
+            for (const req in requirements) {
+                const element = document.getElementById(`req-${req}`);
+                if (requirements[req]) {
+                    element.classList.remove('invalid');
+                    element.classList.add('valid');
+                } else {
+                    element.classList.remove('valid');
+                    element.classList.add('invalid');
+                }
+            }
+            
+            // Calcular la fuerza de la contraseña
+            let strength = 0;
+            for (const req in requirements) {
+                if (requirements[req]) strength++;
+            }
+            
+            // Actualizar la barra de fuerza
+            strengthBar.classList.remove('weak', 'medium', 'strong');
+            if (strength <= 2) {
+                strengthBar.classList.add('weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('medium');
+            } else {
+                strengthBar.classList.add('strong');
+            }
+            
+            // Verificar también la coincidencia de contraseñas
+            checkPasswordMatch();
+        }
+
+        function checkPasswordMatch() {
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const matchElement = document.getElementById('password-match');
+            
+            if (confirmPassword.length === 0) {
+                matchElement.textContent = 'Confirma tu contraseña';
+                matchElement.classList.remove('valid', 'invalid');
+                return false;
+            }
+            
+            if (password === confirmPassword && password.length > 0) {
+                matchElement.textContent = 'Las contraseñas coinciden';
+                matchElement.classList.remove('invalid');
+                matchElement.classList.add('valid');
+                return true;
+            } else {
+                matchElement.textContent = 'Las contraseñas no coinciden';
+                matchElement.classList.remove('valid');
+                matchElement.classList.add('invalid');
+                return false;
+            }
+        }
+
+        function isPasswordValid() {
+            const password = document.getElementById('regPassword').value;
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                symbol: /[!@#$%^&*]/.test(password)
+            };
+            
+            for (const req in requirements) {
+                if (!requirements[req]) return false;
+            }
+            
+            return true;
+        }
+
+        function doPasswordsMatch() {
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            return password === confirmPassword && password.length > 0;
+        }  
+
+        function resetPasswordValidation() {
+            // Resetear todos los indicadores
+            document.querySelectorAll('.requirement').forEach(el => {
+                el.classList.remove('valid');
+                el.classList.add('invalid');
+            });
+            
+            document.querySelector('.password-strength').classList.remove('weak', 'medium', 'strong');
+            document.getElementById('password-match').classList.remove('valid');
+            document.getElementById('password-match').classList.add('invalid');
+            document.getElementById('password-match').textContent = 'Las contraseñas deben coincidir';
+        }
+
+        // Funciones para filtros (del código original)
+        function toggleFilter(filterType) {
+            const filter = document.getElementById(filterType + 'Filter');
+            const allFilters = document.querySelectorAll('.filter-options');
+            
+            allFilters.forEach(f => {
+                if (f !== filter) f.classList.remove('show');
+            });
+            
+            filter.classList.toggle('show');
+        }
+
+        function toggleLanguage(language) {
+            const index = selectedLanguages.indexOf(language);
+            if (index === -1) {
+                selectedLanguages.push(language);
+            } else {
+                selectedLanguages.splice(index, 1);
+            }
+            
+            updateFilterDisplay();
+            loadDevelopers();
+        }
+
+        function toggleArea(area) {
+            const index = selectedAreas.indexOf(area);
+            if (index === -1) {
+                selectedAreas.push(area);
+            } else {
+                selectedAreas.splice(index, 1);
+            }
+            
+            updateFilterDisplay();
+            loadDevelopers();
+        }
+
+        function updateFilterDisplay() {
+            // Actualizar visualización de filtros activos
+            const languageOptions = document.querySelectorAll('#languagesFilter .filter-option');
+            const areaOptions = document.querySelectorAll('#areasFilter .filter-option');
+            
+            languageOptions.forEach(option => {
+                if (selectedLanguages.includes(option.textContent)) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            areaOptions.forEach(option => {
+                if (selectedAreas.includes(option.textContent)) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        function clearFilters() {
+            selectedLanguages = [];
+            selectedAreas = [];
+            updateFilterDisplay();
+            loadDevelopers();
+        }
+
+        // Funciones de chat (del código original)
+        async function loadChatList(){
+            const chatList = document.getElementById('chatList');
+            chatList.innerHTML = '<p>Cargando conversaciones...</p>';
+            
+            try {
+                const result = await apiCall('chats.php?action=conversations');
+                
+                if (result.conversations && result.conversations.length > 0) {
+                    displayChatList(chatList, result.conversations);
+                } else {
+                    chatList.innerHTML = '<p>No tienes conversaciones activas.</p>';
+                }
+            } catch (error) {
+                chatList.innerHTML = `<p>Error al cargar conversaciones: ${error.message}</p>`;
+            }
+        }
+
+        function displayChatList(chatList, conversations) {
+            chatList.innerHTML = '';
+            
+            conversations.forEach(chat => {
+                const chatItem = document.createElement('div');
+                chatItem.className = 'chat-item';
+                if (currentChat && currentChat.id === chat.id) {
+                    chatItem.classList.add('active');
+                }
+                
+                const lastMsg = chat.lastMessage ? 
+                    (chat.lastMessage.length > 30 ? 
+                        chat.lastMessage.substring(0, 30) + '...' : 
+                        chat.lastMessage) : 
+                    'No hay mensajes aún';
+                
+                const time = chat.lastMessageDate ? formatTime(chat.lastMessageDate) : '';
+                
+                chatItem.innerHTML = `
+                    <div class="chat-title">${escapeHtml(chat.jobTitle)} - ${escapeHtml(chat.otherUserName)}</div>
+                    <div class="chat-preview">${escapeHtml(lastMsg)}</div>
+                    <div class="chat-time">${time}</div>
+                `;
+                
+                chatItem.onclick = () => {
+                    currentChat = chat;
+                    loadChatList();
+                    loadChatMessages();
+                    
+                    document.getElementById('currentChatTitle').innerText = 
+                        `Chat: ${chat.jobTitle} - ${chat.otherUserName}`;
+                };
+                
+                chatList.appendChild(chatItem);
+            });
+        }
+
+        async function loadChatMessages(){
+            const div = document.getElementById('chatMessages');
+            div.innerHTML = '<p>Cargando mensajes...</p>';
+            
+            if (!currentChat) {
+                div.innerHTML = '<p>Selecciona una conversación para ver los mensajes.</p>';
+                return;
+            }
+            
+            try {
+                const result = await apiCall(`chats.php?action=messages&conversation_id=${currentChat.id}`);
+                displayMessages(div, result.messages);
+            } catch (error) {
+                div.innerHTML = `<p>Error al cargar mensajes: ${error.message}</p>`;
+            }
+        }
+
+     function displayMessages(div, messages) {
+    div.innerHTML = '';
+    
+    if (!messages || messages.length === 0) {
+        div.innerHTML = '<p>No hay mensajes en esta conversación.</p>';
+        return;
+    }
+    
+    let lastDate = null;
+    
+    messages.forEach(msg => {
+        // Si es un separador de fecha, procesarlo
+        if (msg.type === 'date_separator') {
+            const dateSeparator = document.createElement('div');
+            dateSeparator.className = 'message-date-separator';
+            dateSeparator.innerHTML = `<span class="message-date-text">${msg.dateFormatted}</span>`;
+            div.appendChild(dateSeparator);
+            return;
+        }
+        
+        // Procesar mensaje normal
+        const msgContainer = document.createElement('div');
+        msgContainer.className = `message ${msg.senderId == currentUser.id ? 'user' : 'other'}`;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.textContent = msg.message;
+        
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'message-time';
+        timeDiv.textContent = formatMessageTime(msg.timestamp);
+        
+        msgContainer.appendChild(contentDiv);
+        msgContainer.appendChild(timeDiv);
+        div.appendChild(msgContainer);
+    });
+    
+    div.scrollTop = div.scrollHeight;
+}
+
+// Función para formatear la hora en formato 12 horas (HH:MM AM/PM)
+function formatMessageTime(timestamp) {
+    const date = new Date(timestamp);
+    
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Si es 0, cambiar a 12
+    
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    hours = hours < 10 ? '0' + hours : hours;
+    
+    return `${hours}:${minutes} ${ampm}`;
+}
+        async function sendMessage(){
+            if (!currentChat) {
+                alert('Selecciona una conversación primero.');
+                return;
+            }
+            
+            const input = document.getElementById('chatInput');
+            const messageText = input.value.trim();
+            
+            if(!messageText) return;
+            
+            try {
+                await apiCall('chats.php', {
+                    method: 'POST',
+                    body: {
+                        action: 'send',
+                        conversation_id: currentChat.id,
+                        message: messageText
+                    }
+                });
+                
+                input.value = '';
+                loadChatMessages();
+                loadChatList();
+            } catch (error) {
+                alert('Error al enviar mensaje: ' + error.message);
+            }
+        }
+
+        async function openChat(jobId, otherUserId, jobTitle){
+            try {
+                // Primero crear o obtener la conversación
+                const result = await apiCall('chats.php', {
+                    method: 'POST',
+                    body: {
+                        action: 'create',
+                        job_id: jobId,
+                        other_user_id: otherUserId
+                    }
+                });
+                
+                currentChat = {
+                    id: result.conversation_id,
+                    jobTitle: jobTitle,
+                    otherUserId: otherUserId
+                };
+                
+                showChats();
+                
+                // Obtener información del otro usuario para mostrar en el título
+                const otherUserInfo = developers.find(d => d.id == otherUserId) || 
+                                     { firstName: 'Usuario', lastName: otherUserId };
+                const displayName = `${otherUserInfo.firstName} ${otherUserInfo.lastName}`;
+                
+                document.getElementById('currentChatTitle').innerText = `Chat: ${jobTitle} - ${displayName}`;
+                loadChatMessages();
+            } catch (error) {
+                alert('Error al abrir chat: ' + error.message);
+            }
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Cerrar filtros al hacer clic fuera de ellos
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.filter-group')) {
+                document.querySelectorAll('.filter-options').forEach(filter => {
+                    filter.classList.remove('show');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
