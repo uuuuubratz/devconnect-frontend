@@ -1642,22 +1642,28 @@ function setupUserPermissions() {
 
 // Función mejorada para manejar CORS
 async function apiCall(endpoint, options = {}) {
+    // Asegurar que la URL sea correcta
     const url = `${API_BASE}/${endpoint}`;
+    console.log('Haciendo request a:', url);
+    
     const config = {
-        mode: 'cors',
-        credentials: 'omit',
+        method: options.method || 'GET',
         headers: {
             'Content-Type': 'application/json',
+            ...options.headers
         },
-        ...options
+        mode: 'cors',
+        credentials: 'omit'
     };
     
+    // Añadir token si existe
     if (currentToken) {
         config.headers['Authorization'] = `Bearer ${currentToken}`;
     }
     
-    if (config.body && typeof config.body === 'object') {
-        config.body = JSON.stringify(config.body);
+    // Añadir body si existe
+    if (options.body) {
+        config.body = typeof options.body === 'string' ? options.body : JSON.stringify(options.body);
     }
     
     try {
@@ -1666,7 +1672,8 @@ async function apiCall(endpoint, options = {}) {
         // Verificar si la respuesta es OK
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
+            console.error('Error response:', errorText);
+            throw new Error(`Error ${response.status}: ${errorText}`);
         }
         
         const data = await response.json();
@@ -1675,12 +1682,11 @@ async function apiCall(endpoint, options = {}) {
     } catch (error) {
         console.error('API Error:', error);
         
-        // Manejar errores de CORS específicamente
         if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-            throw new Error('Error de conexión con el servidor. Verifica tu conexión a internet.');
+            throw new Error('No se pudo conectar con el servidor. Verifica tu conexión a internet.');
         }
         
-        throw new Error(error.message || 'Error en la solicitud');
+        throw error;
     }
 }
 
@@ -2129,7 +2135,7 @@ function switchTab(tabName) {
     list.innerHTML = '';
     
     if (jobsToShow.length === 0) {
-        list.innerHTML = '<div class="card text-center" style="grid-column: 1 / -1; padding: 2rem;"><p>No se encontraron ofertas de trabajo.</p></div>';
+        list.innerHTML = '<div style="grid-column: 1 / -1; padding: 2rem; text-align: center;"><p>No se encontraron ofertas de trabajo.</p></div>';
         return;
     }
     
