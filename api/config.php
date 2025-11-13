@@ -1,36 +1,50 @@
 <?php
 
-date_default_timezone_set('America/Mexico_City'); // O tu zona horaria
+date_default_timezone_set('America/Mexico_City');
 header('Content-Type: application/json');
 
-header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *");
+// IMPORTANTE: Configurar CORS para permitir GitHub Pages
+$allowed_origins = [
+    'https://uuuuubratz.github.io',
+    'http://localhost:8000',  // Para desarrollo local
+    'http://127.0.0.1:8000'
+];
+
+$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+
+if (in_array($origin, $allowed_origins)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
+
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
 class Database {
-    private $host = "localhost";
-    private $db_name = "devconnect";
-    private $username = "root";
-    private $password = "";
+    // CAMBIA ESTOS VALORES con los de InfinityFree
+    private $host = "sql100.infinityfree.com";
+    private $db_name = "if0_40178006_db_name";
+    private $username = "if0_40178006";
+    private $password = "ANPAnm29zWz";
     public $conn;
 
     public function getConnection() {
         $this->conn = null;
         try {
             $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8",
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
                 $this->username,
-                $this->password
+                $this->password,
+                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4")
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $exception) {
             http_response_code(500);
-            echo json_encode(["error" => "Error de conexiÃ³n: " . $exception->getMessage()]);
+            echo json_encode(["error" => "Error de conexión: " . $exception->getMessage()]);
             exit;
         }
         return $this->conn;
@@ -84,7 +98,7 @@ function verifyToken($db) {
             return $user;
         } else {
             http_response_code(401);
-            echo json_encode(["error" => "Token invÃ¡lido"]);
+            echo json_encode(["error" => "Token inválido"]);
             exit;
         }
     } catch (PDOException $e) {
@@ -93,4 +107,5 @@ function verifyToken($db) {
         exit;
     }
 }
+
 ?>
