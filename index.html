@@ -1522,6 +1522,8 @@
         let selectedAreas = [];
         const API_BASE = 'https://equipo1labura.infinityfreeapp.com/api';
 
+        
+
         // Estado de autenticación
         let isAuthenticated = false;
 
@@ -1638,38 +1640,49 @@ function setupUserPermissions() {
             }
         }
 
-        // Función para hacer requests a la API (del código original)
-        async function apiCall(endpoint, options = {}) {
-            const url = `${API_BASE}/${endpoint}`;
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                ...options
-            };
-            
-            if (currentToken) {
-                config.headers['Authorization'] = `Bearer ${currentToken}`;
-            }
-            
-            if (config.body && typeof config.body === 'object') {
-                config.body = JSON.stringify(config.body);
-            }
-            
-            try {
-                const response = await fetch(url, config);
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || 'Error en la solicitud');
-                }
-                
-                return data;
-            } catch (error) {
-                console.error('API Error:', error);
-                throw error;
-            }
+// Función mejorada para manejar CORS
+async function apiCall(endpoint, options = {}) {
+    const url = `${API_BASE}/${endpoint}`;
+    const config = {
+        mode: 'cors',
+        credentials: 'omit',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        ...options
+    };
+    
+    if (currentToken) {
+        config.headers['Authorization'] = `Bearer ${currentToken}`;
+    }
+    
+    if (config.body && typeof config.body === 'object') {
+        config.body = JSON.stringify(config.body);
+    }
+    
+    try {
+        const response = await fetch(url, config);
+        
+        // Verificar si la respuesta es OK
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
         }
+        
+        const data = await response.json();
+        return data;
+        
+    } catch (error) {
+        console.error('API Error:', error);
+        
+        // Manejar errores de CORS específicamente
+        if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            throw new Error('Error de conexión con el servidor. Verifica tu conexión a internet.');
+        }
+        
+        throw new Error(error.message || 'Error en la solicitud');
+    }
+}
 
         // Función para mostrar/ocultar loading (del código original)
         function setLoading(button, isLoading) {
